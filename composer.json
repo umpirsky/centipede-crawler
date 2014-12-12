@@ -1,0 +1,22 @@
+{
+    "name": "umpirsky/centipede-crawler",
+    "type": "library",
+    "description": "Crawls all unique links.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Saša Stamenković",
+            "email": "umpirsky@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "~5.4",
+        "fabpot/goutte": "~2.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": { "Centipede\\": "src/" }
+    }
+}
