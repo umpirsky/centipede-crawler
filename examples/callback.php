@@ -2,6 +2,9 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-(new Centipede\Crawler('http://dev.umpirsky.com'))->crawl(function ($url) {
-    echo $url.PHP_EOL;
+use Centipede\Crawler;
+use Symfony\Component\BrowserKit\Response;
+
+(new Crawler('http://dev.umpirsky.com'))->crawl(function ($url, Response $response) {
+    printf('(%d) %s%s', $response->getStatus(), $url, PHP_EOL);
 });
