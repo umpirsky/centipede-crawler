@@ -69,6 +69,11 @@ class Crawler
 
     private function shouldCrawl($url)
     {
-        return parse_url($url, PHP_URL_HOST) === parse_url($this->baseUrl, PHP_URL_HOST);
+        $host = parse_url($url, PHP_URL_HOST);
+        if (null === $host) {
+            return true;
+        }
+
+        return $host === parse_url($this->baseUrl, PHP_URL_HOST);
     }
 }
