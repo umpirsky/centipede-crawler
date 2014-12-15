@@ -22,19 +22,21 @@ class Crawler
     {
         $urls = [$this->baseUrl];
 
-        return $this->doCrawl(
+        $this->doCrawl(
             $this->baseUrl,
             $this->request($this->baseUrl, $callable),
             $this->depth,
             $callable,
             $urls
         );
+
+        return $urls;
     }
 
     private function doCrawl($url, DomCrawler $crawler, $depth, callable $callable = null, array &$urls = [])
     {
         if (0 === $depth) {
-            return $urls;
+            return;
         }
 
         foreach ($crawler->filter('a') as $node) {
@@ -52,8 +54,6 @@ class Crawler
                 $urls[] = $href;
             }
         }
-
-        return $urls;
     }
 
     private function request($url, callable $callable = null)
