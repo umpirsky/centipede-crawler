@@ -2,6 +2,8 @@
 
 namespace Centipede;
 
+use Centipede\Authenticator\AuthenticatorInterface;
+use Centipede\Authenticator\NullAuthenticator;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 
@@ -10,12 +12,23 @@ class Crawler
     private $client;
     private $baseUrl;
     private $depth;
+    private $ignoreUrl;
 
-    public function __construct($baseUrl, $depth = 1)
-    {
+    public function __construct(
+        $baseUrl,
+        $depth = 1,
+        $ignoreUrl = array(),
+        AuthenticatorInterface $authenticator = null
+    ) {
         $this->client = new Client();
         $this->baseUrl = $baseUrl;
         $this->depth = $depth;
+        $this->ignoreUrl = $ignoreUrl;
+
+        null === $authenticator
+            ? (new NullAuthenticator())->authenticate($this->client)
+            : $authenticator->authenticate($this->client)
+        ;
     }
 
     public function crawl(callable $callable = null)
@@ -70,6 +83,11 @@ class Crawler
     private function shouldCrawl($url)
     {
         $host = parse_url($url, PHP_URL_HOST);
+
+        if (in_array($url, $this->ignoreUrl)) {
+            return false;
+        }
+
         if (null === $host) {
             return true;
         }
