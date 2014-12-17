@@ -12,18 +12,15 @@ class Crawler
     private $client;
     private $baseUrl;
     private $depth;
-    private $ignoreUrl;
 
     public function __construct(
         $baseUrl,
         $depth = 1,
-        $ignoreUrl = array(),
         AuthenticatorInterface $authenticator = null
     ) {
         $this->client = new Client();
         $this->baseUrl = $baseUrl;
         $this->depth = $depth;
-        $this->ignoreUrl = $ignoreUrl;
 
         if (null === $authenticator) {
             $authenticator = new NullAuthenticator();
@@ -84,10 +81,6 @@ class Crawler
     private function shouldCrawl($url)
     {
         $host = parse_url($url, PHP_URL_HOST);
-
-        if (in_array($url, $this->ignoreUrl)) {
-            return false;
-        }
 
         if (null === $host) {
             return true;
