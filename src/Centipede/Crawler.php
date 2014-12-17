@@ -25,10 +25,11 @@ class Crawler
         $this->depth = $depth;
         $this->ignoreUrl = $ignoreUrl;
 
-        null === $authenticator
-            ? (new NullAuthenticator())->authenticate($this->client)
-            : $authenticator->authenticate($this->client)
-        ;
+        if (null === $authenticator) {
+            $authenticator = new NullAuthenticator();
+        }
+
+        $authenticator->authenticate($this->client);
     }
 
     public function crawl(callable $callable = null)
