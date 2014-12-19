@@ -40,7 +40,7 @@ class Crawler
         }
 
         foreach ($crawler->filter('a') as $node) {
-            $href = $node->getAttribute('href');
+            $href = $this->filterUrl($node->getAttribute('href'));
 
             if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
                 $this->doCrawl(
@@ -67,8 +67,23 @@ class Crawler
         return $crawler;
     }
 
+    private function filterUrl($url)
+    {
+        $url = rtrim($url, '/');
+
+        if (false !== $position = strpos($url, '#')) {
+            $url = substr($url, 0, $position);
+        }
+
+        return $url;
+    }
+
     private function shouldCrawl($url)
     {
+        if (empty($url)) {
+            return false;
+        }
+
         $host = parse_url($url, PHP_URL_HOST);
         if (null === $host) {
             return true;
