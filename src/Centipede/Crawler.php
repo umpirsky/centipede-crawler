@@ -25,26 +25,28 @@ class Crawler
 
         $this->doCrawl(
             $this->baseUrl,
-            $this->request($this->baseUrl, $callable),
+            $response = $this->request($this->baseUrl, $callable),
             $this->depth,
             $callable,
             $urls
         );
+
+        $response->wait();
 
         return $urls;
     }
 
     private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
     {
+        if (null !== $callable) {
+            $callable($url, $response);
+        }
+
+        if (0 === $depth) {
+            return;
+        }
+
         $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
-            if (null !== $callable) {
-                $callable($url, $response);
-            }
-
-            if (0 === $depth) {
-                return;
-            }
-
             foreach ($this->getUrls($response) as $href) {
                 $href = $this->filterUrl($href);
 
@@ -61,8 +63,6 @@ class Crawler
                 }
             }
         });
-
-        $response->wait();
     }
 
     private function getUrls(Response $response)
