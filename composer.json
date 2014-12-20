@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "~5.4",
-        "fabpot/goutte": "~2.0"
+        "guzzlehttp/guzzle": "~5.1"
     },
     "config": {
         "bin-dir": "bin"

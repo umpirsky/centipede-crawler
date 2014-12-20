@@ -4,74 +4,24 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "78717c760b7faf192a3c622b88665735",
+    "hash": "f1bd495b957ad1066c9f3c41bec33fde",
     "packages": [
         {
-            "name": "fabpot/goutte",
-            "version": "v2.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfPHP/Goutte.git",
-                "reference": "b12c3f7ec68d8814b50444cfe142fd0a056557f9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/Goutte/zipball/b12c3f7ec68d8814b50444cfe142fd0a056557f9",
-                "reference": "b12c3f7ec68d8814b50444cfe142fd0a056557f9",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "4.*",
-                "php": ">=5.4.0",
-                "symfony/browser-kit": "~2.1",
-                "symfony/css-selector": "~2.1",
-                "symfony/dom-crawler": "~2.1"
-            },
-            "type": "application",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Goutte": "."
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "A simple PHP Web Scraper",
-            "homepage": "https://github.com/fabpot/Goutte",
-            "keywords": [
-                "scraper"
-            ],
-            "time": "2014-07-22 13:24:11"
-        },
-        {
             "name": "guzzlehttp/guzzle",
-            "version": "4.2.3",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "66fd916e9f9130bc22c51450476823391cb2f67c"
+                "reference": "f1085bb4e023766a66b7b051914ec73bdf7202b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/66fd916e9f9130bc22c51450476823391cb2f67c",
-                "reference": "66fd916e9f9130bc22c51450476823391cb2f67c",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f1085bb4e023766a66b7b051914ec73bdf7202b5",
+                "reference": "f1085bb4e023766a66b7b051914ec73bdf7202b5",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
-                "guzzlehttp/streams": "~2.1",
+                "guzzlehttp/ringphp": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -79,22 +29,16 @@
                 "phpunit/phpunit": "~4.0",
                 "psr/log": "~1.0"
             },
-            "suggest": {
-                "ext-curl": "Guzzle will use specific adapters if cURL is present"
-            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "GuzzleHttp\\": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -118,41 +62,44 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-10-05 19:29:14"
+            "time": "2014-12-19 20:27:15"
         },
         {
-            "name": "guzzlehttp/streams",
-            "version": "2.1.0",
+            "name": "guzzlehttp/ringphp",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/guzzle/streams.git",
-                "reference": "f91b721d73f0e561410903b3b3c90a5d0e40b534"
+                "url": "https://github.com/guzzle/RingPHP.git",
+                "reference": "a903f51b692427318bc813217c0e6505287e79a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/streams/zipball/f91b721d73f0e561410903b3b3c90a5d0e40b534",
-                "reference": "f91b721d73f0e561410903b3b3c90a5d0e40b534",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/a903f51b692427318bc813217c0e6505287e79a4",
+                "reference": "a903f51b692427318bc813217c0e6505287e79a4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "guzzlehttp/streams": "~3.0",
+                "php": ">=5.4.0",
+                "react/promise": "~2.0"
             },
             "require-dev": {
+                "ext-curl": "*",
                 "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "Guzzle will use specific adapters if cURL is present"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "GuzzleHttp\\Stream\\": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
+                    "GuzzleHttp\\Ring\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -165,50 +112,88 @@
                     "homepage": "https://github.com/mtdowling"
                 }
             ],
-            "description": "Provides a simple abstraction over streams of data (Guzzle 4+)",
+            "time": "2014-12-11 05:50:32"
+        },
+        {
+            "name": "guzzlehttp/streams",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/streams.git",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Stream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple abstraction over streams of data",
             "homepage": "http://guzzlephp.org/",
             "keywords": [
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-08-17 21:15:53"
+            "time": "2014-10-12 19:18:40"
         },
         {
-            "name": "symfony/browser-kit",
-            "version": "v2.6.1",
-            "target-dir": "Symfony/Component/BrowserKit",
+            "name": "react/promise",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/BrowserKit.git",
-                "reference": "421feda1413fbd09f15d9e7ce39790239d7e01e7"
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "937b04f1b0ee8f6d180e75a0830aac778ca4bcd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/421feda1413fbd09f15d9e7ce39790239d7e01e7",
-                "reference": "421feda1413fbd09f15d9e7ce39790239d7e01e7",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/937b04f1b0ee8f6d180e75a0830aac778ca4bcd6",
+                "reference": "937b04f1b0ee8f6d180e75a0830aac778ca4bcd6",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "symfony/dom-crawler": "~2.0"
-            },
-            "require-dev": {
-                "symfony/css-selector": "~2.0",
-                "symfony/process": "~2.0"
-            },
-            "suggest": {
-                "symfony/process": ""
+                "php": ">=5.4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\BrowserKit\\": ""
-                }
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -216,121 +201,12 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@googlemail.com"
                 }
             ],
-            "description": "Symfony BrowserKit Component",
-            "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:19:20"
-        },
-        {
-            "name": "symfony/css-selector",
-            "version": "v2.6.1",
-            "target-dir": "Symfony/Component/CssSelector",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/CssSelector.git",
-                "reference": "93eb315b545b60a908271762fb4bfa1f9954b851"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/93eb315b545b60a908271762fb4bfa1f9954b851",
-                "reference": "93eb315b545b60a908271762fb4bfa1f9954b851",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\CssSelector\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
-                    "name": "Jean-François Simon",
-                    "email": "jeanfrancois.simon@sensiolabs.com"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "Symfony CssSelector Component",
-            "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:19:20"
-        },
-        {
-            "name": "symfony/dom-crawler",
-            "version": "v2.6.1",
-            "target-dir": "Symfony/Component/DomCrawler",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/DomCrawler.git",
-                "reference": "300d449f79d74ac62b06edd05214e8dd2e635840"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/300d449f79d74ac62b06edd05214e8dd2e635840",
-                "reference": "300d449f79d74ac62b06edd05214e8dd2e635840",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "symfony/css-selector": "~2.0"
-            },
-            "suggest": {
-                "symfony/css-selector": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Symfony\\Component\\DomCrawler\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "Symfony DomCrawler Component",
-            "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:19:20"
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "time": "2014-10-15 20:05:57"
         }
     ],
     "packages-dev": [],

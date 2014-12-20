@@ -2,8 +2,8 @@
 
 namespace Centipede;
 
-use Goutte\Client;
-use Symfony\Component\DomCrawler\Crawler as DomCrawler;
+use GuzzleHttp\Client;
+use GuzzleHttp\Message\ResponseInterface;
 
 class Crawler
 {
@@ -33,38 +33,53 @@ class Crawler
         return $urls;
     }
 
-    private function doCrawl($url, DomCrawler $crawler, $depth, callable $callable = null, array &$urls = [])
+    private function doCrawl($url, ResponseInterface $response, $depth, callable $callable = null, array &$urls = [])
     {
-        if (0 === $depth) {
-            return;
-        }
-
-        foreach ($crawler->filter('a') as $node) {
-            $href = $this->filterUrl($node->getAttribute('href'));
-
-            if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
-                $this->doCrawl(
-                    $href,
-                    $this->request($href, $callable),
-                    $depth - 1,
-                    $callable,
-                    $urls
-                );
-
-                $urls[] = $href;
+        $response->then(function (ResponseInterface $response) use ($url, $depth, $callable, &$urls) {
+            if (null !== $callable) {
+                $callable($url, $response);
             }
+
+            if (0 === $depth) {
+                return;
+            }
+
+            foreach ($this->getUrls($response) as $href) {
+                $href = $this->filterUrl($href);
+
+                if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
+                    $this->doCrawl(
+                        $href,
+                        $this->request($href, $callable),
+                        $depth - 1,
+                        $callable,
+                        $urls
+                    );
+
+                    $urls[] = $href;
+                }
+            }
+        });
+
+        $response->wait();
+    }
+
+    private function getUrls(ResponseInterface $response)
+    {
+        $urls = [];
+
+        $document = new \DOMDocument();
+        $document->loadHTML($response->getBody()->getContents());
+        foreach ($document->getElementsByTagName('a') as $node) {
+          $urls[] = $node->getAttribute('href');
         }
+
+        return $urls;
     }
 
     private function request($url, callable $callable = null)
     {
-        $crawler = $this->client->request('GET', $url);
-
-        if (null !== $callable) {
-            $callable($url, $this->client->getResponse());
-        }
-
-        return $crawler;
+        return $this->client->get($url, ['future' => true]);
     }
 
     private function filterUrl($url)
