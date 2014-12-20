@@ -28,9 +28,11 @@ class Crawler
     {
         $urls = [$this->baseUrl];
 
+        $response = $this->client->get($this->baseUrl, ['future' => true]);
+
         $this->doCrawl(
             $this->baseUrl,
-            $response = $this->request($this->baseUrl, $callable),
+            $response,
             $this->depth,
             $callable,
             $urls
@@ -77,7 +79,7 @@ class Crawler
                 if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
                     $this->doCrawl(
                         $href,
-                        $this->request($href, $callable),
+                        $this->client->get($href, ['future' => true]),
                         $depth - 1,
                         $callable,
                         $urls
@@ -100,11 +102,6 @@ class Crawler
         }
 
         return $urls;
-    }
-
-    private function request($url, callable $callable = null)
-    {
-        return $this->client->get($url, ['future' => true]);
     }
 
     private function shouldCrawl($url)
