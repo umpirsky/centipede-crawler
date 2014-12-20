@@ -3,7 +3,8 @@
 namespace Centipede;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Message\FutureResponse;
 
 class Crawler
 {
@@ -33,9 +34,9 @@ class Crawler
         return $urls;
     }
 
-    private function doCrawl($url, ResponseInterface $response, $depth, callable $callable = null, array &$urls = [])
+    private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
     {
-        $response->then(function (ResponseInterface $response) use ($url, $depth, $callable, &$urls) {
+        $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
             if (null !== $callable) {
                 $callable($url, $response);
             }
@@ -64,7 +65,7 @@ class Crawler
         $response->wait();
     }
 
-    private function getUrls(ResponseInterface $response)
+    private function getUrls(Response $response)
     {
         $urls = [];
 
