@@ -3,21 +3,23 @@
 namespace Centipede;
 
 use Centipede\Filter\UrlFilter;
+use Centipede\Filter\FilterInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Message\FutureResponse;
 
 class Crawler
 {
     private $client;
-    private $urlFilter;
+    private $filter;
     private $baseUrl;
     private $depth;
 
     public function __construct($baseUrl, $depth = 1)
     {
         $this->client = new Client();
-        $this->urlFilter = new UrlFilter();
+        $this->filter = new UrlFilter();
         $this->baseUrl = $baseUrl;
         $this->depth = $depth;
     }
@@ -39,6 +41,25 @@ class Crawler
         return $urls;
     }
 
+    public function setClient(ClientInterface $client)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    public function setFilter(FilterInterface $filter)
+    {
+        $this->filter = $filter;
+
+        return $this;
+    }
+
     private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
     {
         if (null !== $callable) {
@@ -51,7 +72,7 @@ class Crawler
 
         $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
             foreach ($this->getUrls($response) as $href) {
-                $href = $this->urlFilter->filter($href);
+                $href = $this->filter->filter($href);
 
                 if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
                     $this->doCrawl(

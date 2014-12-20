@@ -12,6 +12,11 @@ class UrlFilterSpec extends ObjectBehavior
         $this->shouldHaveType('Centipede\Filter\UrlFilter');
     }
 
+    function it_is_centipede_filter()
+    {
+        $this->shouldImplement('Centipede\Filter\FilterInterface');
+    }
+
     function it_filters_url_hash()
     {
         $this->filter('https://github.com#hash')->shouldReturn('https://github.com');

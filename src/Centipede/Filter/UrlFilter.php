@@ -2,16 +2,16 @@
 
 namespace Centipede\Filter;
 
-class UrlFilter
+class UrlFilter implements FilterInterface
 {
-    public function filter($url)
+    public function filter($value)
     {
-        $url = rtrim($url, '/');
+        $value = rtrim($value, '/');
 
-        if (false !== $position = strpos($url, '#')) {
-            $url = substr($url, 0, $position);
+        if (false !== $position = strpos($value, '#')) {
+            $value = substr($value, 0, $position);
         }
 
-        return $url;
+        return $value;
     }
 }
