@@ -4,6 +4,8 @@ namespace Centipede;
 
 use Centipede\Filter\UrlFilter;
 use Centipede\Filter\FilterInterface;
+use Centipede\Extractor\UrlExtractor;
+use Centipede\Extractor\ExtractorInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Message\Response;
@@ -11,17 +13,20 @@ use GuzzleHttp\Message\FutureResponse;
 
 class Crawler
 {
-    private $client;
-    private $filter;
     private $baseUrl;
     private $depth;
+    private $client;
+    private $filter;
+    private $extractor;
 
     public function __construct($baseUrl, $depth = 1)
     {
-        $this->client = new Client();
-        $this->filter = new UrlFilter();
         $this->baseUrl = $baseUrl;
         $this->depth = $depth;
+
+        $this->client = new Client();
+        $this->filter = new UrlFilter();
+        $this->extractor = new UrlExtractor();
     }
 
     public function crawl(callable $callable = null)
@@ -62,6 +67,13 @@ class Crawler
         return $this;
     }
 
+    public function setExtractor(ExtractorInterface $extractor)
+    {
+        $this->extractor = $extractor;
+
+        return $this;
+    }
+
     private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
     {
         if (null !== $callable) {
@@ -73,7 +85,11 @@ class Crawler
         }
 
         $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
-            foreach ($this->getUrls($response) as $href) {
+            $hrefs = $this->extractor->extract(
+                $response->getBody()->getContents()
+            );
+
+            foreach ($hrefs as $href) {
                 $href = $this->filter->filter($href);
 
                 if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
@@ -89,19 +105,6 @@ class Crawler
                 }
             }
         });
-    }
-
-    private function getUrls(Response $response)
-    {
-        $urls = [];
-
-        $document = new \DOMDocument();
-        $document->loadHTML($response->getBody()->getContents());
-        foreach ($document->getElementsByTagName('a') as $node) {
-          $urls[] = $node->getAttribute('href');
-        }
-
-        return $urls;
     }
 
     private function shouldCrawl($url)
