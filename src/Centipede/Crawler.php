@@ -2,6 +2,7 @@
 
 namespace Centipede;
 
+use Centipede\Filter\UrlFilter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Message\FutureResponse;
@@ -9,12 +10,14 @@ use GuzzleHttp\Message\FutureResponse;
 class Crawler
 {
     private $client;
+    private $urlFilter;
     private $baseUrl;
     private $depth;
 
     public function __construct($baseUrl, $depth = 1)
     {
         $this->client = new Client();
+        $this->urlFilter = new UrlFilter();
         $this->baseUrl = $baseUrl;
         $this->depth = $depth;
     }
@@ -48,7 +51,7 @@ class Crawler
 
         $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
             foreach ($this->getUrls($response) as $href) {
-                $href = $this->filterUrl($href);
+                $href = $this->urlFilter->filter($href);
 
                 if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
                     $this->doCrawl(
@@ -81,17 +84,6 @@ class Crawler
     private function request($url, callable $callable = null)
     {
         return $this->client->get($url, ['future' => true]);
-    }
-
-    private function filterUrl($url)
-    {
-        $url = rtrim($url, '/');
-
-        if (false !== $position = strpos($url, '#')) {
-            $url = substr($url, 0, $position);
-        }
-
-        return $url;
     }
 
     private function shouldCrawl($url)
