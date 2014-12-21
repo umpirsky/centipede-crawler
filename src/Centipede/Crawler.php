@@ -4,6 +4,8 @@ namespace Centipede;
 
 use Centipede\Filter\UrlFilter;
 use Centipede\Filter\FilterInterface;
+use Centipede\Checker\HostChecker;
+use Centipede\Checker\CheckerInterface;
 use Centipede\Extractor\UrlExtractor;
 use Centipede\Extractor\ExtractorInterface;
 use GuzzleHttp\Client;
@@ -17,6 +19,7 @@ class Crawler
     private $depth;
     private $client;
     private $filter;
+    private $checker;
     private $extractor;
 
     public function __construct($baseUrl, $depth = 1)
@@ -26,6 +29,7 @@ class Crawler
 
         $this->client = new Client();
         $this->filter = new UrlFilter();
+        $this->checker = new HostChecker(parse_url($baseUrl, PHP_URL_HOST));
         $this->extractor = new UrlExtractor();
     }
 
@@ -74,6 +78,13 @@ class Crawler
         return $this;
     }
 
+    public function setChecker(CheckerInterface $checker)
+    {
+        $this->checker = $checker;
+
+        return $this;
+    }
+
     private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
     {
         if (null !== $callable) {
@@ -91,7 +102,7 @@ class Crawler
             foreach ($hrefs as $href) {
                 $href = $this->filter->filter($href);
 
-                if (!in_array($href, $urls) && $this->shouldCrawl($href)) {
+                if (!in_array($href, $urls) && $this->checker->isCrawlable($href)) {
                     $this->doCrawl(
                         $href,
                         $this->client->get($href, ['future' => true]),
@@ -111,19 +122,5 @@ class Crawler
                 throw $e;
             }
         );
-    }
-
-    private function shouldCrawl($url)
-    {
-        if (empty($url)) {
-            return false;
-        }
-
-        $host = parse_url($url, PHP_URL_HOST);
-        if (null === $host) {
-            return true;
-        }
-
-        return $host === parse_url($this->baseUrl, PHP_URL_HOST);
     }
 }

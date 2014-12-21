@@ -11,7 +11,7 @@ class UrlExtractor implements ExtractorInterface
         $document = new \DOMDocument();
         $document->loadHTML($value);
         foreach ($document->getElementsByTagName('a') as $node) {
-          $urls[] = $node->getAttribute('href');
+            $urls[] = $node->getAttribute('href');
         }
 
         return $urls;
