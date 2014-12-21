@@ -83,7 +83,6 @@ class Crawler
         if (0 === $depth) {
             return;
         }
-
         $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
             $hrefs = $this->extractor->extract(
                 $response->getBody()->getContents()
@@ -104,7 +103,14 @@ class Crawler
                     $urls[] = $href;
                 }
             }
-        });
+        }, function (\Exception $e) {
+            throw $e;
+        })->then(
+            null,
+            function (\Exception $e) {
+                throw $e;
+            }
+        );
     }
 
     private function shouldCrawl($url)
