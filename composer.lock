@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "abab9b9be47cfb2b118033493a0e62c8",
+    "hash": "178e663d2b3507ac353eb6cb2baf88a7",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -166,16 +166,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "937b04f1b0ee8f6d180e75a0830aac778ca4bcd6"
+                "reference": "e668c06dec6d6d202264c4e6f956d6e4ef049889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/937b04f1b0ee8f6d180e75a0830aac778ca4bcd6",
-                "reference": "937b04f1b0ee8f6d180e75a0830aac778ca4bcd6",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/e668c06dec6d6d202264c4e6f956d6e4ef049889",
+                "reference": "e668c06dec6d6d202264c4e6f956d6e4ef049889",
                 "shasum": ""
             },
             "require": {
@@ -192,7 +192,7 @@
                     "React\\Promise\\": "src/"
                 },
                 "files": [
-                    "src/functions.php"
+                    "src/functions_include.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -206,7 +206,7 @@
                 }
             ],
             "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2014-10-15 20:05:57"
+            "time": "2014-12-25 23:33:45"
         }
     ],
     "packages-dev": [
@@ -806,8 +806,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "react/promise": 20
+    },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": "~5.4"
     },
