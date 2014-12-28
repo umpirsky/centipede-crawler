@@ -6,4 +6,7 @@ php:
     - 5.6
     - hhvm
 
+install:
+    - composer install
+
 script: php bin/phpspec run -f pretty
