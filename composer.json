@@ -11,7 +11,11 @@
     ],
     "require": {
         "php": "~5.4",
-        "fabpot/goutte": "~2.0"
+        "guzzlehttp/guzzle": "~5.1",
+        "react/promise": "dev-master@dev"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0"
     },
     "config": {
         "bin-dir": "bin"
