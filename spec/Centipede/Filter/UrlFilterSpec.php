@@ -7,6 +7,11 @@ use Prophecy\Argument;
 
 class UrlFilterSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('http://github.com');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Centipede\Filter\UrlFilter');

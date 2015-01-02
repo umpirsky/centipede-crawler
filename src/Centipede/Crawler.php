@@ -28,7 +28,7 @@ class Crawler
         $this->depth = $depth;
 
         $this->client = new Client();
-        $this->filter = new UrlFilter();
+        $this->filter = new UrlFilter($baseUrl);
         $this->checker = new HostChecker(parse_url($baseUrl, PHP_URL_HOST));
         $this->extractor = new UrlExtractor();
     }
