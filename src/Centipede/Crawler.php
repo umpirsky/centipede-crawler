@@ -28,7 +28,7 @@ class Crawler
         $this->depth = $depth;
 
         $this->client = new Client();
-        $this->filter = new UrlFilter($baseUrl);
+        $this->filter = new UrlFilter();
         $this->checker = new HostChecker(parse_url($baseUrl, PHP_URL_HOST));
         $this->extractor = new UrlExtractor();
     }
@@ -87,8 +87,9 @@ class Crawler
 
     private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
     {
+
         if (null !== $callable) {
-            $callable($url, $response);
+            $callable($url, $response, $depth);
         }
 
         if (0 === $depth) {
@@ -96,13 +97,13 @@ class Crawler
         }
 
         $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
+
             $hrefs = $this->extractor->extract(
                 $response->getBody()->getContents()
             );
 
             foreach ($hrefs as $href) {
-                $href = $this->filter->filter($href);
-
+                $href = $this->filter->filter($href, $url);
                 if (!in_array($href, $urls) && $this->checker->isCrawlable($href)) {
                     $this->doCrawl(
                         $href,
@@ -116,5 +117,6 @@ class Crawler
                 }
             }
         })->done();
+
     }
 }

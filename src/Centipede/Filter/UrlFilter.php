@@ -4,25 +4,38 @@ namespace Centipede\Filter;
 
 class UrlFilter implements FilterInterface
 {
-    private $baseUrl;
-
-    public function __construct($baseUrl)
+    public function filter($url, $previousUrl = null)
     {
-        $this->baseUrl = rtrim($baseUrl, '/');
-    }
+        $parseValueUrl = parse_url($url);
 
-    public function filter($value)
-    {
-        $value = rtrim($value, '/');
-
-        if (false !== $position = strpos($value, '#')) {
-            $value = substr($value, 0, $position);
+        // Return the value if we already have an absolute URL
+        if (isset($parseValueUrl['scheme'])) {
+            return $url;
         }
 
-        if (null !== parse_url($value, PHP_URL_SCHEME)) {
-            return $value;
+        // These are all the settings we'll need to recreate the url.
+        // They're also the different keys that parse_url can return.
+        $parseUrlSettings = array('scheme' => '', 'host' => '', 'path' => '', 'port' => '', 'query' => '');
+
+        $parsePreviousUrl = array_merge($parseUrlSettings, parse_url($previousUrl));
+
+        $path = isset($parseValueUrl['path']) ? $parseValueUrl['path'] : '';
+
+        if (strpos($path, '/') !== 0) {
+            $previousPath = rtrim($parsePreviousUrl['path'], '/');
+            $path = ($previousPath ? ($previousPath.'/') : '' ) .$path;
         }
 
-        return $this->baseUrl.$value;
+        // We also replace the host, in case of protocolless urls like "//domain.com/"
+        $parseValueUrl = array_merge(array(
+            'scheme' => $parsePreviousUrl['scheme'],
+            'host' => $parsePreviousUrl['host'],
+            'path' => $path,
+        ), $parseValueUrl);
+
+        $parts = array_merge($parseUrlSettings, $parseValueUrl);
+
+        return $parts['scheme'].'://'.$parts['host'].$parts['port'].$parts['path'].($parts['query'] ? ('?'.$parts['query']) : '');
     }
+
 }
