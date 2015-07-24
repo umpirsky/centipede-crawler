@@ -87,7 +87,7 @@ class Crawler
     private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null)
     {
 
-        if (0 === $depth || array_key_exists($url, $this->urls)) {
+        if ($depth < 0 || array_key_exists($url, $this->urls)) {
             return;
         }
 
