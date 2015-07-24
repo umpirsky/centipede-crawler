@@ -6,7 +6,12 @@ class UrlFilter implements FilterInterface
 {
     public function filter($url, $previousUrl = null)
     {
+
         $parseValueUrl = parse_url($url);
+
+        if (strpos($url, '#') === 0) {
+            return null;
+        }
 
         // Return the value if we already have an absolute URL
         if (isset($parseValueUrl['scheme'])) {

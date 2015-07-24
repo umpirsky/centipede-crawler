@@ -15,7 +15,9 @@ class UrlExtractor implements ExtractorInterface
         libxml_use_internal_errors(false);
 
         foreach ($document->getElementsByTagName('a') as $node) {
-            $urls[] = $node->getAttribute('href');
+            if ($node->hasAttribute('href')) {
+                $urls[] = $node->getAttribute('href');
+            }
         }
 
         return $urls;

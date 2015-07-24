@@ -22,6 +22,8 @@ class Crawler
     private $checker;
     private $extractor;
 
+    private $urls = array();
+
     public function __construct($baseUrl, $depth = 1)
     {
         $this->baseUrl = $baseUrl;
@@ -35,21 +37,18 @@ class Crawler
 
     public function crawl(callable $callable = null)
     {
-        $urls = [$this->baseUrl];
-
         $response = $this->client->get($this->baseUrl, ['future' => true]);
 
         $this->doCrawl(
             $this->baseUrl,
             $response,
             $this->depth,
-            $callable,
-            $urls
+            $callable
         );
 
         $response->wait();
 
-        return $urls;
+        return $this->urls;
     }
 
     public function setClient(ClientInterface $client)
@@ -85,18 +84,20 @@ class Crawler
         return $this;
     }
 
-    private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null, array &$urls = [])
+    private function doCrawl($url, FutureResponse $response, $depth, callable $callable = null)
     {
+
+        if (0 === $depth || array_key_exists($url, $this->urls)) {
+            return;
+        }
 
         if (null !== $callable) {
             $callable($url, $response, $depth);
         }
 
-        if (0 === $depth) {
-            return;
-        }
+        $this->urls[$url] = (isset($this->urls[$url]) ? $this->urls[$url] : 0) + 1;
 
-        $response->then(function (Response $response) use ($url, $depth, $callable, &$urls) {
+        $response->then(function (Response $response) use ($url, $depth, $callable) {
 
             $hrefs = $this->extractor->extract(
                 $response->getBody()->getContents()
@@ -104,16 +105,14 @@ class Crawler
 
             foreach ($hrefs as $href) {
                 $href = $this->filter->filter($href, $url);
-                if (!in_array($href, $urls) && $this->checker->isCrawlable($href)) {
+                if (!array_key_exists($href, $this->urls) && $this->checker->isCrawlable($href)) {
                     $this->doCrawl(
                         $href,
                         $this->client->get($href, ['future' => true]),
                         $depth - 1,
                         $callable,
-                        $urls
+                        $this->urls
                     );
-
-                    $urls[] = $href;
                 }
             }
         })->done();
