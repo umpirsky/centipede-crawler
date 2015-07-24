@@ -37,7 +37,7 @@ class Crawler
 
     public function crawl(callable $callable = null)
     {
-        $response = $this->client->get($this->baseUrl, ['future' => true]);
+        $response = $this->client->get($this->baseUrl, ['exceptions' => false, 'future' => true]);
 
         $this->doCrawl(
             $this->baseUrl,
@@ -108,7 +108,7 @@ class Crawler
                 if (!array_key_exists($href, $this->urls) && $this->checker->isCrawlable($href)) {
                     $this->doCrawl(
                         $href,
-                        $this->client->get($href, ['future' => true]),
+                        $this->client->get($href, ['exceptions' => false, 'future' => true]),
                         $depth - 1,
                         $callable
                     );
