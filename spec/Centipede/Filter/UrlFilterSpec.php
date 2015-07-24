@@ -22,7 +22,7 @@ class UrlFilterSpec extends ObjectBehavior
         $this->filter('https://github.com#hash')->shouldReturn('https://github.com');
     }
 
-    function it_filters_trailing_slash()
+    function it_des_not_filter_out_trailing_slash()
     {
         $this->filter('https://github.com/')->shouldReturn('https://github.com/');
     }
