@@ -6,8 +6,11 @@ class UrlFilter implements FilterInterface
 {
     public function filter($url, $previousUrl = null)
     {
+        // These are all the settings we'll need to recreate the url.
+        // They're also the different keys that parse_url can return.
+        $parseUrlSettings = array('scheme' => '', 'host' => '', 'path' => '', 'port' => '', 'query' => '');
 
-        $parseValueUrl = parse_url($url);
+        $parseValueUrl = array_merge($parseUrlSettings, parse_url($url));
 
         if (strpos($url, '#') === 0) {
             return null;
@@ -15,16 +18,13 @@ class UrlFilter implements FilterInterface
 
         // Return the value if we already have an absolute URL
         if (isset($parseValueUrl['scheme'])) {
-            return $url;
+            return $parseValueUrl['scheme'].'://'.$parseValueUrl['host'].$parseValueUrl['port'].$parseValueUrl['path'].($parseValueUrl['query'] ? ('?'.$parseValueUrl['query']) : '');
         }
 
-        // These are all the settings we'll need to recreate the url.
-        // They're also the different keys that parse_url can return.
-        $parseUrlSettings = array('scheme' => '', 'host' => '', 'path' => '', 'port' => '', 'query' => '');
 
         $parsePreviousUrl = array_merge($parseUrlSettings, parse_url($previousUrl));
 
-        $path = isset($parseValueUrl['path']) ? $parseValueUrl['path'] : '';
+        $path = $parseValueUrl['path'];
 
         if (strpos($path, '/') !== 0) {
             $previousPath = rtrim($parsePreviousUrl['path'], '/');
