@@ -110,12 +110,10 @@ class Crawler
                         $href,
                         $this->client->get($href, ['future' => true]),
                         $depth - 1,
-                        $callable,
-                        $this->urls
+                        $callable
                     );
                 }
             }
         })->done();
-
     }
 }
