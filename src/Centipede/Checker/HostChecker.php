@@ -22,6 +22,11 @@ class HostChecker implements CheckerInterface
             return true;
         }
 
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if (null !== $scheme && !preg_match('/^https?/', $scheme)) {
+            return false;
+        }
+
         return $host === $this->host;
     }
 }
