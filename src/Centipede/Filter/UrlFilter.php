@@ -13,7 +13,7 @@ class UrlFilter implements FilterInterface
 
     public function filter($value)
     {
-        if(strpos($value, "javascript:") === 0) {
+        if(strpos($value, "javascript:") === 0 || strpos($value, "mailto:") === 0) {
             return false;
         }
 

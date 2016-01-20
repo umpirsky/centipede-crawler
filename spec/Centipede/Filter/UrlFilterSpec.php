@@ -36,4 +36,9 @@ class UrlFilterSpec extends ObjectBehavior
     {
         $this->filter('javascript: doStuff();')->shouldReturn(false);
     }
+
+     function it_returns_false_if_mailto()
+    {
+        $this->filter('mailto: some@guy.com')->shouldReturn(false);
+    }
 }
