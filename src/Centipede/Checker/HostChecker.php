@@ -13,7 +13,7 @@ class HostChecker implements CheckerInterface
 
     public function isCrawlable($url)
     {
-        if (empty($url)) {
+        if (empty($url) || preg_match('/^tel:.*/i', $url)) {
             return false;
         }
 
