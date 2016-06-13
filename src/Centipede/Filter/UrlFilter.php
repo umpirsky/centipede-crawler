@@ -19,7 +19,7 @@ class UrlFilter implements FilterInterface
             $value = substr($value, 0, $position);
         }
 
-        if (null !== parse_url($value, PHP_URL_SCHEME)) {
+        if (null !== parse_url($value, PHP_URL_SCHEME) || preg_match('/^\/\/.*/', $value)) {
             return $value;
         }
 
