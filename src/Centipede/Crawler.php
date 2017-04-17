@@ -102,6 +102,9 @@ class Crawler
 
             foreach ($hrefs as $href) {
                 $href = $this->filter->filter($href);
+                if($href === false) {
+                    continue; // Invalid, skip
+                }
 
                 if (!in_array($href, $urls) && $this->checker->isCrawlable($href)) {
                     $this->doCrawl(

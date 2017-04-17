@@ -31,4 +31,14 @@ class UrlFilterSpec extends ObjectBehavior
     {
         $this->filter('https://github.com/')->shouldReturn('https://github.com');
     }
+
+    function it_returns_false_if_js()
+    {
+        $this->filter('javascript: doStuff();')->shouldReturn(false);
+    }
+
+     function it_returns_false_if_mailto()
+    {
+        $this->filter('mailto: some@guy.com')->shouldReturn(false);
+    }
 }
